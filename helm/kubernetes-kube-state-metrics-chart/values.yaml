@@ -1,0 +1,21 @@
+# Default values for node-exporter-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+name: kube-state-metrics
+namespace: kube-system
+port: 10301
+
+replicas: 1
+
+image:
+  repository: quay.io/giantswarm/kube-state-metrics
+  tag: v1.2.0
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 75Mi
+  requests:
+    cpu: 50m
+    memory: 75Mi
