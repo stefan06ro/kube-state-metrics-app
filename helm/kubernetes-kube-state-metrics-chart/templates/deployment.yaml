@@ -5,12 +5,14 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.name }}
+    giantswarm.io/service-type: "managed"
 spec:
   replicas: {{ .Values.replicas }}
   template:
     metadata:
       labels:
         app: {{ .Values.name }}
+        giantswarm.io/service-type: "managed"
     spec:
       containers:
       - name: {{ .Values.name }}
