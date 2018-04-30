@@ -38,6 +38,8 @@ rules:
   - persistentvolumes
   - namespaces
   - endpoints
+  - secrets
+  - configmaps
   verbs:
   - list
   - watch
@@ -73,3 +75,11 @@ rules:
   - use
   resourceNames:
   - {{ .Values.name }}
+- apiGroups:
+  - autoscaling
+  attributeRestrictions: null
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - list
+  - watch
