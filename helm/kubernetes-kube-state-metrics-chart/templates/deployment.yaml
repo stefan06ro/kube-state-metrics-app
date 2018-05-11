@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.name }}
@@ -8,6 +8,9 @@ metadata:
     giantswarm.io/service-type: "managed"
 spec:
   replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
