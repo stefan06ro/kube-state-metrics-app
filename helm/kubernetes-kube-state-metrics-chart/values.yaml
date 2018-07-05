@@ -5,6 +5,7 @@
 name: kube-state-metrics
 namespace: kube-system
 port: 10301
+portName: metrics
 
 replicas: 1
 

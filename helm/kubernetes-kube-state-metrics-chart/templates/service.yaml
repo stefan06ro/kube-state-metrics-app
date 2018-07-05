@@ -12,5 +12,6 @@ metadata:
 spec:
   ports:
   - port: {{ .Values.port }}
+    name: {{ .Values.portName }}
   selector:
     app: {{ .Values.name }}
