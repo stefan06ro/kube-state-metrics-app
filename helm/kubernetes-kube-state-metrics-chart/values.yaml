@@ -11,7 +11,7 @@ replicas: 1
 image:
   registry: quay.io
   repository: giantswarm/kube-state-metrics
-  tag: v1.2.0
+  tag: v1.3.1
 
 resources:
   limits:
