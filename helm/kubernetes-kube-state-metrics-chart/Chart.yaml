@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: v1.3.1
 description: A Helm chart for the Kubernetes kube-state-metrics service
 name: kubernetes-kube-state-metrics-chart
-version: 0.1.4
+version: 0.1.5

@@ -16,11 +16,11 @@ image:
 
 resources:
   limits:
-    cpu: 50m
-    memory: 75Mi
+    cpu: 100m
+    memory: 200Mi
   requests:
-    cpu: 50m
-    memory: 75Mi
+    cpu: 100m
+    memory: 200Mi
 
 test:
   image:
