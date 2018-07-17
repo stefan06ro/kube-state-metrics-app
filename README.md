@@ -22,7 +22,7 @@ $ helm install kubernetes-kube-state-metrics/helm/kubernetes-kube-state-metrics-
 | `name`                  | The name of the service                         | `kube-state-metrics`                    |
 | `namespace`             | The namespaces the services runs in             | `kube-system`                           |
 | `image.repository`      | The image repository to pull from               | `quay.io/giantswarm/kube-state-metrics` |
-| `image.tag`             | The image tag to pull from                      | `v1.2.0`                                |
+| `image.tag`             | The image tag to pull from                      | `v1.3.1`                                |
 | `replicas`              | The number of replicas of the container         | `1`                                     |
 | `port`                  | The port of the container                       | `10301`                                 |
 | `resources`             | kube-state-metrics resource requests and limits | `cpu:50m  - memory:75Mi`                |
