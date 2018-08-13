@@ -48,17 +48,6 @@ data:
             }
         },
         {
-            "kind": "ServiceAccount",
-            "name": "kube-state-metrics",
-            "namespace": "kube-system",
-            "matchLabels": {
-                "app": "kube-state-metrics"
-            },
-            "excludeLabels": {
-                "giantswarm.io/service-type": "managed"
-            }
-        },
-        {
             "kind": "ClusterRoleBinding",
             "name": "kube-state-metrics",
             "namespace": "kube-system",
@@ -71,6 +60,17 @@ data:
         },
         {
             "kind": "ClusterRole",
+            "name": "kube-state-metrics",
+            "namespace": "kube-system",
+            "matchLabels": {
+                "app": "kube-state-metrics"
+            },
+            "excludeLabels": {
+                "giantswarm.io/service-type": "managed"
+            }
+        },
+        {
+            "kind": "ServiceAccount",
             "name": "kube-state-metrics",
             "namespace": "kube-system",
             "matchLabels": {
