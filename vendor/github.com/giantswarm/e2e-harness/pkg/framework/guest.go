@@ -2,10 +2,12 @@ package framework
 
 import (
 	"fmt"
-	"log"
-	"os"
+	"time"
 
+	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
+	"github.com/giantswarm/backoff"
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -21,42 +23,73 @@ const (
 	minimumNodesReady = 3
 )
 
-type Guest struct {
-	k8sClient  kubernetes.Interface
-	restConfig *rest.Config
+type GuestConfig struct {
+	Logger micrologger.Logger
+
+	ClusterID    string
+	CommonDomain string
 }
 
-func NewGuest() (*Guest, error) {
+type Guest struct {
+	logger micrologger.Logger
+
+	g8sClient  versioned.Interface
+	k8sClient  kubernetes.Interface
+	restConfig *rest.Config
+
+	clusterID    string
+	commonDomain string
+}
+
+func NewGuest(config GuestConfig) (*Guest, error) {
+	if config.Logger == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+	}
+
+	if config.ClusterID == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.ClusterID must not be empty", config)
+	}
+	if config.CommonDomain == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.CommonDomain must not be empty", config)
+	}
+
 	g := &Guest{
+		logger: config.Logger,
+
+		g8sClient:  nil,
 		k8sClient:  nil,
 		restConfig: nil,
+
+		clusterID:    config.ClusterID,
+		commonDomain: config.CommonDomain,
 	}
 
 	return g, nil
 }
 
+// G8sClient returns the guest cluster framework's apiextensions clientset. The
+// client being returned is properly configured once Guest.Setup() is executed
+// successfully.
+func (g *Guest) G8sClient() versioned.Interface {
+	return g.g8sClient
+}
+
 // K8sClient returns the guest cluster framework's Kubernetes client. The client
-// being returned is properly configured ones Guest.Setup() got executed
+// being returned is properly configured once Guest.Setup() is executed
 // successfully.
 func (g *Guest) K8sClient() kubernetes.Interface {
 	return g.k8sClient
 }
 
 // RestConfig returns the guest cluster framework's rest config. The config
-// being returned is properly configured ones Guest.Setup() got executed
+// being returned is properly configured once Guest.Setup() is executed
 // successfully.
 func (g *Guest) RestConfig() *rest.Config {
 	return g.restConfig
 }
 
-// Setup provides a separate initialization step because of the nature of the
-// host/guest cluster design. We have to setup things in different stages.
-// Constructing the frameworks can be done right away but setting them up can
-// only happen as soon as certain requirements have been met. A requirement for
-// the guest framework is a set up host cluster.
-func (g *Guest) Setup() error {
-	var err error
-
+// Initialize sets up the Guest fields that are not directly injected.
+func (g *Guest) Initialize() error {
 	var hostK8sClient kubernetes.Interface
 	{
 		c, err := clientcmd.BuildConfigFromFlags("", harness.DefaultKubeConfig)
@@ -69,22 +102,28 @@ func (g *Guest) Setup() error {
 		}
 	}
 
+	var guestG8sClient versioned.Interface
 	var guestK8sClient kubernetes.Interface
 	var guestRestConfig *rest.Config
 	{
-		n := os.ExpandEnv("${CLUSTER_NAME}-api")
+		n := fmt.Sprintf("%s-api", g.clusterID)
 		s, err := hostK8sClient.CoreV1().Secrets("default").Get(n, metav1.GetOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		guestRestConfig := &rest.Config{
-			Host: os.ExpandEnv("https://api.${CLUSTER_NAME}.${COMMON_DOMAIN_GUEST}"),
+		guestRestConfig = &rest.Config{
+			Host: fmt.Sprintf("https://api.%s.k8s.%s", g.clusterID, g.commonDomain),
 			TLSClientConfig: rest.TLSClientConfig{
 				CAData:   s.Data["ca"],
 				CertData: s.Data["crt"],
 				KeyData:  s.Data["key"],
 			},
+		}
+
+		guestG8sClient, err = versioned.NewForConfig(guestRestConfig)
+		if err != nil {
+			return microerror.Mask(err)
 		}
 
 		guestK8sClient, err = kubernetes.NewForConfig(guestRestConfig)
@@ -93,8 +132,23 @@ func (g *Guest) Setup() error {
 		}
 	}
 
+	g.g8sClient = guestG8sClient
 	g.k8sClient = guestK8sClient
 	g.restConfig = guestRestConfig
+
+	return nil
+}
+
+// Setup provides a separate initialization step because of the nature of the
+// host/guest cluster design. We have to setup things in different stages.
+// Constructing the frameworks can be done right away but setting them up can
+// only happen as soon as certain requirements have been met. A requirement for
+// the guest framework is a set up host cluster.
+func (g *Guest) Setup() error {
+	err := g.Initialize()
+	if err != nil {
+		return microerror.Mask(err)
+	}
 
 	err = g.WaitForGuestReady()
 	if err != nil {
@@ -105,24 +159,55 @@ func (g *Guest) Setup() error {
 }
 
 func (g *Guest) WaitForAPIDown() error {
-	apiDown := func() error {
-		_, err := g.k8sClient.
-			CoreV1().
-			Services("default").
-			Get("kubernetes", metav1.GetOptions{})
+	time.Sleep(1 * time.Second)
 
-		if err == nil {
-			return microerror.Mask(fmt.Errorf("API up"))
+	g.logger.Log("level", "debug", "message", "waiting for k8s API to be down")
+
+	o := func() error {
+		_, err := g.k8sClient.CoreV1().Services("default").Get("kubernetes", metav1.GetOptions{})
+		if err != nil {
+			return nil
 		}
-		log.Printf("k8s API down: %v\n", err)
-		return nil
+
+		return microerror.Maskf(waitError, "k8s API is still up")
+	}
+	b := backoff.NewConstant(LongMaxWait, ShortMaxInterval)
+	n := func(err error, delay time.Duration) {
+		g.logger.Log("level", "debug", "message", err.Error())
 	}
 
-	log.Printf("waiting for k8s API down\n")
-	err := waitConstantFor(apiDown)
+	err := backoff.RetryNotify(o, b, n)
 	if err != nil {
 		return microerror.Mask(err)
 	}
+
+	g.logger.Log("level", "debug", "message", "k8s API is down")
+
+	return nil
+}
+
+func (g *Guest) WaitForAPIUp() error {
+	g.logger.Log("level", "debug", "message", "waiting for k8s API to be up")
+
+	o := func() error {
+		_, err := g.k8sClient.CoreV1().Services("default").Get("kubernetes", metav1.GetOptions{})
+		if err != nil {
+			return microerror.Maskf(waitError, "k8s API is still down")
+		}
+
+		return nil
+	}
+	b := backoff.NewConstant(LongMaxWait, LongMaxInterval)
+	n := func(err error, delay time.Duration) {
+		g.logger.Log("level", "debug", "message", err.Error())
+	}
+
+	err := backoff.RetryNotify(o, b, n)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	g.logger.Log("level", "debug", "message", "k8s API is up")
 
 	return nil
 }
@@ -130,7 +215,7 @@ func (g *Guest) WaitForAPIDown() error {
 func (g *Guest) WaitForGuestReady() error {
 	var err error
 
-	err = g.waitForAPIUp()
+	err = g.WaitForAPIUp()
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -140,49 +225,43 @@ func (g *Guest) WaitForGuestReady() error {
 		return microerror.Mask(err)
 	}
 
-	log.Println("Guest cluster ready")
-
 	return nil
 }
 
 func (g *Guest) WaitForNodesUp(numberOfNodes int) error {
-	nodesUp := func() error {
+	g.logger.Log("level", "debug", "message", "waiting for k8s nodes to be up")
+
+	o := func() error {
 		nodes, err := g.k8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
 		if len(nodes.Items) != numberOfNodes {
-			log.Printf("worker nodes not found")
-			return microerror.Mask(notFoundError)
+			return microerror.Maskf(waitError, "worker nodes are still not found")
 		}
 
 		for _, n := range nodes.Items {
 			for _, c := range n.Status.Conditions {
 				if c.Type == v1.NodeReady && c.Status != v1.ConditionTrue {
-					log.Printf("worker nodes not ready")
-					return microerror.Mask(notFoundError)
+					return microerror.Maskf(waitError, "worker nodes are still not ready")
 				}
 			}
 		}
 
 		return nil
 	}
-
-	return waitFor(nodesUp)
-}
-
-func (g *Guest) waitForAPIUp() error {
-	apiUp := func() error {
-		_, err := g.k8sClient.CoreV1().Services("default").Get("kubernetes", metav1.GetOptions{})
-		if err != nil {
-			log.Println("k8s API not up")
-			return microerror.Mask(err)
-		}
-
-		log.Println("k8s API up")
-		return nil
+	b := backoff.NewConstant(LongMaxWait, LongMaxInterval)
+	n := func(err error, delay time.Duration) {
+		g.logger.Log("level", "debug", "message", err.Error())
 	}
 
-	return waitFor(apiUp)
+	err := backoff.RetryNotify(o, b, n)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	g.logger.Log("level", "debug", "message", "k8s nodes are up")
+
+	return nil
 }
