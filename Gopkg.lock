@@ -60,7 +60,7 @@
     "digestset",
     "reference"
   ]
-  revision = "059f301d548d58085032e6af149a08352221f792"
+  revision = "90705d2fb81dda1466be49bd958ed8a0dd9a6145"
 
 [[projects]]
   name = "github.com/docker/docker"
@@ -131,7 +131,7 @@
     "pkg/clientset/versioned/typed/example/v1alpha1",
     "pkg/clientset/versioned/typed/provider/v1alpha1"
   ]
-  revision = "427166f178767c667affce0e68a88c0f77df4972"
+  revision = "4c9945ca5b9cb966b22566c8e3fd789fefd5db98"
 
 [[projects]]
   branch = "master"
@@ -150,10 +150,20 @@
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
+    "pkg/framework/filelogger",
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "356ee815b2f63562157d4f30149f7e8b19ae2a74"
+  revision = "7e1c962c0edc1dfb2321ae32b10aa66415d98965"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/giantswarm/e2esetup"
+  packages = [
+    "chart",
+    "chart/env"
+  ]
+  revision = "d69cd345fbb3e1b1c7f092cf009d0c92806ce2bb"
 
 [[projects]]
   branch = "master"
@@ -165,13 +175,13 @@
   branch = "master"
   name = "github.com/giantswarm/helmclient"
   packages = ["."]
-  revision = "95121dddf902715f9b1799fc64dbf7119d471dec"
+  revision = "ec20d46eb68e6fd0cda0a6c0132df4a3fc1a8318"
 
 [[projects]]
   branch = "master"
   name = "github.com/giantswarm/k8sportforward"
   packages = ["."]
-  revision = "85abe7e11c90cf56ee1eda142ea3051fd61f5b82"
+  revision = "cee042b3bd70531ea52f41df02c04430879806e2"
 
 [[projects]]
   branch = "master"
@@ -209,8 +219,8 @@
 [[projects]]
   name = "github.com/go-resty/resty"
   packages = ["."]
-  revision = "383acc8a8b687098ee02168c0335a43dfee701f0"
-  version = "v1.9.0"
+  revision = "d4920dcf5b7689548a6db640278a9b35a5b48ec6"
+  version = "v1.9.1"
 
 [[projects]]
   name = "github.com/go-stack/stack"
@@ -270,7 +280,7 @@
   branch = "master"
   name = "github.com/google/go-github"
   packages = ["github"]
-  revision = "0780c362705b9dadba66f73253998fe81dec6c37"
+  revision = "c722fc7cbdbd07946fb97667dfe3c931a30cb9af"
 
 [[projects]]
   branch = "master"
@@ -295,13 +305,13 @@
   version = "v0.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/hashicorp/golang-lru"
   packages = [
     ".",
     "simplelru"
   ]
-  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+  revision = "20f1fb78b0740ba8c3cb143a61e86ba5c8669768"
+  version = "v0.5.0"
 
 [[projects]]
   branch = "master"
@@ -432,7 +442,7 @@
     "pbkdf2",
     "ssh/terminal"
   ]
-  revision = "614d502a4dac94afa3a6ce146bd1736da82514c6"
+  revision = "182538f80094b6a8efaade63a8fd8e0d9d5843dd"
 
 [[projects]]
   branch = "master"
@@ -472,7 +482,7 @@
     "unix",
     "windows"
   ]
-  revision = "d99a578cf41bfccdeaf48b0845c823a4b8b0ad5e"
+  revision = "fa5fdf94c78965f1aa8423f0cc50b8b8d728b05a"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -1041,6 +1051,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2cd1e9aaa79ae968b1e50fc7f8c8dd1afc9b7a0c4bcff32569b2a6631b29dc01"
+  inputs-digest = "643d485f9a9f52371f2c043a36669ae0c39fae76829175fb3bc1837f65aa626e"
   solver-name = "gps-cdcl"
   solver-version = 1
