@@ -1,10 +1,9 @@
 // +build k8srequired
 
-package integration
+package migration
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
@@ -15,28 +14,8 @@ import (
 )
 
 const (
-	resourceNamespace = "kube-system"
+	resourceNamespace = metav1.NamespaceSystem
 )
-
-func TestHelm(t *testing.T) {
-	channel := env.CircleSHA()
-
-	err := framework.HelmCmd(fmt.Sprintf("registry install --wait quay.io/giantswarm/kubernetes-kube-state-metrics-chart:%s -n test-deploy", channel))
-	if err != nil {
-		t.Errorf("unexpected error during installation of the chart: %v", err)
-	}
-	defer framework.HelmCmd("delete test-deploy --purge")
-
-	err = checkDeployment()
-	if err != nil {
-		t.Fatalf("deployment manifest is incorrect: %v", err)
-	}
-
-	err = framework.HelmCmd("test --debug --cleanup test-deploy")
-	if err != nil {
-		t.Errorf("unexpected error during test of the chart: %v", err)
-	}
-}
 
 // TestMigration ensures that previously deployed resources are properly removed.
 // It installs a chart with the same resources as kube-state-metrics with
@@ -175,50 +154,6 @@ func checkResourcesNotPresent(labelSelector string) error {
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)
-	}
-
-	return nil
-}
-
-// checkDeployment ensures that key properties of the kube-state-metrics
-// deployment are correct.
-func checkDeployment() error {
-	name := "kube-state-metrics"
-	expectedMatchLabels := map[string]string{
-		"app": "kube-state-metrics",
-	}
-	expectedLabels := map[string]string{
-		"app": "kube-state-metrics",
-		"giantswarm.io/service-type": "managed",
-	}
-	expectedReplicas := 1
-
-	c := h.K8sClient()
-	ds, err := c.Apps().Deployments(resourceNamespace).Get(name, metav1.GetOptions{})
-	if apierrors.IsNotFound(err) {
-		return microerror.Newf("could not find daemonset: '%s' %v", name, err)
-	} else if err != nil {
-		return microerror.Newf("unexpected error getting daemonset: %v", err)
-	}
-
-	// Check daemonset labels.
-	if !reflect.DeepEqual(expectedLabels, ds.ObjectMeta.Labels) {
-		return microerror.Newf("expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
-	}
-
-	// Check selector match labels.
-	if !reflect.DeepEqual(expectedMatchLabels, ds.Spec.Selector.MatchLabels) {
-		return microerror.Newf("expected match labels: %v got: %v", expectedMatchLabels, ds.Spec.Selector.MatchLabels)
-	}
-
-	// Check pod labels.
-	if !reflect.DeepEqual(expectedLabels, ds.Spec.Template.ObjectMeta.Labels) {
-		return microerror.Newf("expected pod labels: %v got: %v", expectedLabels, ds.Spec.Template.ObjectMeta.Labels)
-	}
-
-	// Check replica count.
-	if *ds.Spec.Replicas != int32(expectedReplicas) {
-		return microerror.Newf("expected replicas: %d got: %d", expectedReplicas, ds.Spec.Replicas)
 	}
 
 	return nil
