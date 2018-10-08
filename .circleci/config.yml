@@ -48,6 +48,10 @@ jobs:
 
     - run: ./architect build
 
+    - run:
+        name: Publish chart to CNR using a temporary channel for feature branch deploys
+        command: ./architect publish --pipeline=false --channels=${CIRCLE_BRANCH}
+
     - persist_to_workspace:
         root: .
         paths:
@@ -87,6 +91,10 @@ jobs:
     - attach_workspace:
         at: .
 
+    - run:
+        name: Clean up temporary channel for feature branch deploys
+        command: ./architect unpublish --channels=${CIRCLE_BRANCH}
+
     - run: ./architect publish --stable
 
 workflows:
@@ -98,10 +106,10 @@ workflows:
       - e2eTestBasic:
           requires:
           - build
-      
+
       - e2eTestMigration:
           requires:
-          - build 
+          - build
 
       - deploy:
           filters:
