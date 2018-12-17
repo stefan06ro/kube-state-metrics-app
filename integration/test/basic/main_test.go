@@ -103,12 +103,17 @@ func init() {
 					{
 						Name:      appName,
 						Namespace: metav1.NamespaceSystem,
-						Labels: map[string]string{
+						DeploymentLabels: map[string]string{
 							"app":                        appName,
 							"giantswarm.io/service-type": "managed",
 						},
 						MatchLabels: map[string]string{
 							"app": appName,
+						},
+						PodLabels: map[string]string{
+							"app": appName,
+							"cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
+							"giantswarm.io/service-type":                     "managed",
 						},
 						Replicas: 1,
 					},
@@ -133,7 +138,7 @@ func TestMain(m *testing.M) {
 			Host:       h,
 		}
 
-		err := e2esetup.Setup(ctx, m, c)
+		_, err := e2esetup.Setup(ctx, m, c)
 		if err != nil {
 			l.LogCtx(ctx, "level", "error", "message", "e2e test failed", "stack", fmt.Sprintf("%#v\n", err))
 			os.Exit(1)

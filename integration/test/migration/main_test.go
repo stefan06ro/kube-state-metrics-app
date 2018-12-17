@@ -59,7 +59,7 @@ func init() {
 		}
 	}
 
-	resourceConfig := resource.ResourceConfig{
+	resourceConfig := resource.Config{
 		Logger:     l,
 		HelmClient: helmClient,
 		Namespace:  metav1.NamespaceSystem,
@@ -81,7 +81,7 @@ func TestMain(m *testing.M) {
 			Host:       h,
 		}
 
-		err := e2esetup.Setup(ctx, m, c)
+		_, err := e2esetup.Setup(ctx, m, c)
 		if err != nil {
 			l.LogCtx(ctx, "level", "error", "message", "e2e test failed", "stack", fmt.Sprintf("%#v\n", err))
 			os.Exit(1)

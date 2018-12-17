@@ -14,6 +14,7 @@ spec:
   template:
     metadata:
       labels:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
         app: {{ .Values.name }}
         giantswarm.io/service-type: "managed"
     spec:
