@@ -12,15 +12,12 @@ replicas: 1
 image:
   registry: quay.io
   repository: giantswarm/kube-state-metrics
-  tag: v1.4.0
+  tag: v1.5.0
 
-resources:
-  limits:
-    cpu: 100m
-    memory: 300Mi
-  requests:
-    cpu: 100m
-    memory: 300Mi
+imageResizer:
+  registry: quay.io
+  repository: giantswarm/addon-resizer
+  tag: 1.8.3
 
 test:
   image:
