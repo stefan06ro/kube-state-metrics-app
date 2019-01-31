@@ -111,9 +111,8 @@ func init() {
 							"app": appName,
 						},
 						PodLabels: map[string]string{
-							"app": appName,
-							"cluster-autoscaler.kubernetes.io/safe-to-evict": "true",
-							"giantswarm.io/service-type":                     "managed",
+							"app":                        appName,
+							"giantswarm.io/service-type": "managed",
 						},
 						Replicas: 1,
 					},
