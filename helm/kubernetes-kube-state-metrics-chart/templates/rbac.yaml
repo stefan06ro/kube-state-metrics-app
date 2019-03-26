@@ -83,6 +83,14 @@ rules:
   verbs:
   - list
   - watch
+- apiGroups:
+    - policy
+  attributeRestrictions: null
+  resources:
+    - poddisruptionbudgets
+  verbs:
+    - list
+    - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 # kubernetes versions before 1.8.0 should use rbac.authorization.k8s.io/v1beta1
