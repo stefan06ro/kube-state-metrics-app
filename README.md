@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/kubernetes-kube-state-metrics.svg?style=svg&circle-token=1d6a6248b1d64bd698c7b68801a879ecc9e185f8)](https://circleci.com/gh/giantswarm/kubernetes-kube-state-metrics)
+[![CircleCI](https://circleci.com/gh/giantswarm/kubernetes-kube-state-metrics.svg?style=shield&circle-token=1d6a6248b1d64bd698c7b68801a879ecc9e185f8)](https://circleci.com/gh/giantswarm/kubernetes-kube-state-metrics)
 
 # kube-state-metrics Helm Chart
 Helm Chart for kube-state-metrics in Tenant Clusters.
