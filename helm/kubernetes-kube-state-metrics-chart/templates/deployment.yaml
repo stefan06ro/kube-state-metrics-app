@@ -57,8 +57,8 @@ spec:
         command:
           - /pod_nanny
           - --container={{ .Values.name }}
-          - --cpu=200m
-          - --extra-cpu=1m
+          - --cpu=300m
+          - --extra-cpu=10m
           - --memory=300Mi
           - --extra-memory=5Mi
           - --threshold=5
