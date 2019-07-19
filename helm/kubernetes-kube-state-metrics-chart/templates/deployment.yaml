@@ -19,6 +19,7 @@ spec:
         app: {{ .Values.name }}
         giantswarm.io/service-type: "managed"
     spec:
+      priorityClassName: giantswarm-critical
       containers:
       - name: {{ .Values.name }}
         image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
