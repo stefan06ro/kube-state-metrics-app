@@ -60,7 +60,7 @@ spec:
           - --container={{ .Values.name }}
           - --cpu=300m
           - --extra-cpu=10m
-          - --memory=300Mi
+          - --memory=350Mi
           - --extra-memory=5Mi
           - --threshold=5
           - --deployment={{ .Values.name }}
