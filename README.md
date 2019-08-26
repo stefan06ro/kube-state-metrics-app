@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/giantswarm/kube-state-metrics-app.svg?style=svg)](https://circleci.com/gh/giantswarm/kube-state-metrics-app)
+
 # kube-state-metrics Helm Chart
 Helm Chart for kube-state-metrics in Tenant Clusters.
 
