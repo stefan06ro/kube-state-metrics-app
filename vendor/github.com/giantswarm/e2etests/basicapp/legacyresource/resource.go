@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/giantswarm/apprclient"
 	"github.com/giantswarm/backoff"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
@@ -19,7 +18,6 @@ const (
 )
 
 type Config struct {
-	ApprClient *apprclient.Client
 	HelmClient *helmclient.Client
 	Logger     micrologger.Logger
 
@@ -27,7 +25,6 @@ type Config struct {
 }
 
 type Resource struct {
-	apprClient *apprclient.Client
 	helmClient *helmclient.Client
 	logger     micrologger.Logger
 
@@ -38,26 +35,6 @@ func New(config Config) (*Resource, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
-	if config.ApprClient == nil {
-		config.Logger.Log("level", "debug", "message", fmt.Sprintf("%T.ApprClient is empty", config))
-
-		config.Logger.Log("level", "debug", "message", fmt.Sprintf("using default for %T.ApprClient", config))
-
-		c := apprclient.Config{
-			Fs:     afero.NewOsFs(),
-			Logger: config.Logger,
-
-			Address:      "https://quay.io",
-			Organization: "giantswarm",
-		}
-
-		a, err := apprclient.New(c)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
-
-		config.ApprClient = a
-	}
 	if config.HelmClient == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.HelmClient must not be empty", config)
 	}
@@ -65,7 +42,6 @@ func New(config Config) (*Resource, error) {
 		config.Namespace = defaultNamespace
 	}
 	c := &Resource{
-		apprClient: config.ApprClient,
 		helmClient: config.HelmClient,
 		logger:     config.Logger,
 
@@ -109,16 +85,22 @@ func (r *Resource) EnsureDeleted(ctx context.Context, name string) error {
 	return nil
 }
 
-func (r *Resource) Install(name, values, channel string, conditions ...func() error) error {
+func (r *Resource) Install(name, url, values string, conditions ...func() error) error {
 	ctx := context.TODO()
 
-	chartname := fmt.Sprintf("%s-chart", name)
-
-	tarball, err := r.apprClient.PullChartTarball(ctx, chartname, channel)
+	tarballPath, err := r.helmClient.PullChartTarball(ctx, url)
+	defer func() {
+		fs := afero.NewOsFs()
+		err := fs.Remove(tarballPath)
+		if err != nil {
+			r.logger.LogCtx(ctx, "level", "error", "message", "failed to delete tarball", "stack", fmt.Sprintf("%#v", err))
+		}
+	}()
 	if err != nil {
 		return microerror.Mask(err)
 	}
-	err = r.helmClient.InstallReleaseFromTarball(ctx, tarball, r.namespace, helm.ReleaseName(name), helm.ValueOverrides([]byte(values)), helm.InstallWait(true))
+
+	err = r.helmClient.InstallReleaseFromTarball(ctx, tarballPath, r.namespace, helm.ReleaseName(name), helm.ValueOverrides([]byte(values)), helm.InstallWait(true))
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -133,12 +115,17 @@ func (r *Resource) Install(name, values, channel string, conditions ...func() er
 	return nil
 }
 
-func (r *Resource) Update(name, values, channel string, conditions ...func() error) error {
+func (r *Resource) Update(name, url, values string, conditions ...func() error) error {
 	ctx := context.TODO()
 
-	chartname := fmt.Sprintf("%s-chart", name)
-
-	tarballPath, err := r.apprClient.PullChartTarball(ctx, chartname, channel)
+	tarballPath, err := r.helmClient.PullChartTarball(ctx, url)
+	defer func() {
+		fs := afero.NewOsFs()
+		err := fs.Remove(tarballPath)
+		if err != nil {
+			r.logger.LogCtx(ctx, "level", "error", "message", "failed to delete tarball", "stack", fmt.Sprintf("%#v", err))
+		}
+	}()
 	if err != nil {
 		return microerror.Mask(err)
 	}
