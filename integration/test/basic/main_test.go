@@ -21,8 +21,7 @@ import (
 )
 
 const (
-	appName   = "kube-state-metrics"
-	chartName = "kubernetes-kube-state-metrics"
+	appName = "kube-state-metrics"
 )
 
 const (
@@ -84,7 +83,7 @@ func init() {
 		c := helmclient.Config{
 			Logger:          l,
 			K8sClient:       k8sClients.K8sClient(),
-			RestConfig:      k8sClients.RestConfig(),
+			RestConfig:      k8sClients.RESTConfig(),
 			TillerNamespace: "giantswarm",
 		}
 		helmClient, err = helmclient.New(c)
@@ -101,7 +100,7 @@ func init() {
 
 			App: basicapp.Chart{
 				ChartValues:     templates.KubeStateMetricsValues,
-				Name:            chartName,
+				Name:            appName,
 				Namespace:       metav1.NamespaceSystem,
 				RunReleaseTests: true,
 				URL:             tarballURL,

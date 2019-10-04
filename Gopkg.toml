@@ -27,12 +27,11 @@
 
 
 required = [
-  "github.com/Azure/go-autorest/autorest",
   "github.com/docker/distribution/reference",
-  "k8s.io/api/core/v1",
-  "k8s.io/apimachinery/pkg/apis/meta/v1",
   "k8s.io/apiserver/pkg/endpoints/request"
 ]
+
+
 
 [[constraint]]
   name = "github.com/Azure/go-autorest"
@@ -55,21 +54,45 @@ required = [
   name = "github.com/giantswarm/helmclient"
 
 [[constraint]]
-  name = "k8s.io/api"
-  version = "kubernetes-1.13.2"
+  branch = "master"
+  name = "github.com/giantswarm/k8sclient"
 
 [[constraint]]
-  name = "k8s.io/apimachinery"
-  version = "kubernetes-1.13.2"
+  name = "k8s.io/api"
+  version = "kubernetes-1.15.4"
 
 [[constraint]]
   name = "k8s.io/apiserver"
-  version = "kubernetes-1.13.2"
+  version = "kubernetes-1.15.4"
+
+
+
+[[override]]
+  name = "k8s.io/apimachinery"
+  version = "kubernetes-1.15.4"
+
+[[override]]
+  name = "k8s.io/cli-runtime"
+  version = "kubernetes-1.15.4"
+
+[[override]]
+  name = "k8s.io/kubernetes"
+  version = "v1.15.4"
+
+[[override]]
+  name = "k8s.io/component-base"
+  version = "kubernetes-1.15.4"
+
+[[override]]
+  name = "github.com/ghodss/yaml"
+  branch = "master"
+
+[[override]]
+  name = "github.com/russross/blackfriday"
+  version = "v1.5.2"
+
+
 
 [prune]
   go-tests = true
   unused-packages = true
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/giantswarm/k8sclient"
