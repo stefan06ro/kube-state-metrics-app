@@ -11,16 +11,14 @@ replicas: 1
 
 image:
   registry: quay.io
-  repository: giantswarm/kube-state-metrics
+  name: giantswarm/kube-state-metrics
   tag: v1.8.0
 
 imageResizer:
-  registry: quay.io
-  repository: giantswarm/addon-resizer
+  name: giantswarm/addon-resizer
   tag: 1.8.4
 
 test:
   image:
-    registry: quay.io
-    repository: giantswarm/alpine-testing
+    name: giantswarm/alpine-testing
     tag: 0.1.0

@@ -10,6 +10,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 ### Changed
 
 - Upgraded to kube-state-metrics [new release 1.8.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.8.0)
+- Fix templating for image registry.
 
 ## [v0.5.0]
 
