@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/kube-state-metrics-app.svg?style=svg)](https://circleci.com/gh/giantswarm/kube-state-metrics-app)
+[![CircleCI](https://circleci.com/gh/giantswarm/kube-state-metrics-app.svg?style=shield)](https://circleci.com/gh/giantswarm/kube-state-metrics-app)
 
 # kube-state-metrics Helm Chart
 
@@ -17,7 +17,7 @@ Helm Chart for kube-state-metrics in Tenant Clusters.
 To install the chart locally:
 
 ```bash
-$ git clone https://github.com/giantswarm/kube-state-metrics-ap.git
+$ git clone https://github.com/giantswarm/kube-state-metrics-app.git
 $ cd kube-state-metrics-app
 $ helm install helm/kube-state-metrics-app
 ```
