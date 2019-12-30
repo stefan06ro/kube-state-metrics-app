@@ -12,7 +12,7 @@ replicas: 1
 image:
   registry: quay.io
   name: giantswarm/kube-state-metrics
-  tag: v1.8.0
+  tag: v1.9.0
 
 imageResizer:
   name: giantswarm/addon-resizer
