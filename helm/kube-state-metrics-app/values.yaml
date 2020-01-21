@@ -12,11 +12,12 @@ replicas: 1
 image:
   registry: quay.io
   name: giantswarm/kube-state-metrics
-  tag: v1.9.0
+  # when updating tag make sure to also keep appVersion in Chart.yaml in sync
+  tag: v1.9.2
 
 imageResizer:
   name: giantswarm/addon-resizer
-  tag: 1.8.4
+  tag: 1.8.7
 
 test:
   image:
