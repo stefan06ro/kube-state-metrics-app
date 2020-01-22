@@ -142,7 +142,7 @@ rules:
   resources:
   - pods
   verbs: ["get"]
-- apiGroups: ["extensions"]
+- apiGroups: ["apps"]
   resources:
   - deployments
   resourceNames: ["{{ .Values.name }}"]
