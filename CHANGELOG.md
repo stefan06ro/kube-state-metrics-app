@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v1.0.2]
+
+### Changed
+
+- Adjust RBAC configuration for k8s 1.16 compatibility
+
 ## [v1.0.1]
 
 ### Changed
@@ -68,6 +74,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Upgraded to kube state metric [new release 1.6.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.6.0)
 - Tunned the addon resizer for bigger clusters.
 
+[v1.0.2]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.0
 [v0.7.0]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v0.7.0
