@@ -53,6 +53,8 @@ rules:
   verbs:
   - list
   - watch
+  - get
+  - update
 - apiGroups:
   - certificates.k8s.io
   resources:
