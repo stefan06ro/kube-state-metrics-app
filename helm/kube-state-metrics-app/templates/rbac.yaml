@@ -78,6 +78,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  - validatingwebhookconfigurations
+  verbs:
+  - list
+  - watch
+- apiGroups:
   - batch
   resources:
   - cronjobs
@@ -110,10 +118,18 @@ rules:
   verbs:
   - list
   - watch
-- apiGroups: 
+- apiGroups:
   - storage.k8s.io
   resources:
   - storageclasses
+  - volumeattachments
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - networkpolicies
   verbs:
   - list
   - watch
