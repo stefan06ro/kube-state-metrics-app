@@ -40,9 +40,6 @@ spec:
       - name: addon-resizer
         image: "{{ .Values.image.registry }}/{{ .Values.imageResizer.name }}:{{ .Values.imageResizer.tag }}"
         resources:
-          limits:
-            cpu: 150m
-            memory: 50Mi
           requests:
             cpu: 150m
             memory: 50Mi
