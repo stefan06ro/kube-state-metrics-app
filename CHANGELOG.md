@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [v1.0.3]
 
-### Changed
+### Fixed
 
 - Remove CPU/memory limits on the deployment
 
@@ -81,6 +81,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Upgraded to kube state metric [new release 1.6.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.6.0)
 - Tunned the addon resizer for bigger clusters.
 
+[v1.0.3]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.3
 [v1.0.2]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.0
