@@ -15,10 +15,6 @@ image:
   # when updating tag make sure to also keep appVersion in Chart.yaml in sync
   tag: v1.9.2
 
-imageResizer:
-  name: giantswarm/addon-resizer
-  tag: 1.8.7
-
 test:
   image:
     name: giantswarm/alpine-testing
