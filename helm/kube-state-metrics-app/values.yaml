@@ -13,7 +13,7 @@ image:
   registry: quay.io
   name: giantswarm/kube-state-metrics
   # when updating tag make sure to also keep appVersion in Chart.yaml in sync
-  tag: v1.9.2
+  tag: v1.9.5
 
 test:
   image:
