@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## Unreleased
 
+## [v1.0.5]
+
 ### Changed
 
 - Upgraded to kube-state-metrics [new release 1.9.5](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.9.5)
@@ -72,7 +74,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ### Changed
 
-- Change prioty class to `giantswarm-critical`.
+- Change priority class to `giantswarm-critical`.
 
 ## [v0.3.2]
 
@@ -91,8 +93,9 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 ### Changed
 
 - Upgraded to kube state metric [new release 1.6.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.6.0)
-- Tunned the addon resizer for bigger clusters.
+- Tuned the addon resizer for bigger clusters.
 
+[v1.0.5]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.5
 [v1.0.4]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.4
 [v1.0.3]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.3
 [v1.0.2]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.2
