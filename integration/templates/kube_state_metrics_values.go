@@ -2,5 +2,5 @@
 
 package templates
 
-// KubeStateMetricsValues values used for kubernetes-kube-state-metrics-chart in e2e integration test.
+// KubeStateMetricsValues values used for kube-state-metrics-app in integration test.
 const KubeStateMetricsValues = `e2e: true`

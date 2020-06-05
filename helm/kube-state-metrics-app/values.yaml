@@ -9,6 +9,8 @@ portName: metrics
 
 replicas: 1
 
+e2e: false
+
 image:
   registry: quay.io
   name: giantswarm/kube-state-metrics

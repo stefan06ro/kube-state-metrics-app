@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## Unreleased
 
+### Fixed
+
+- Fix invalid cluster role binding for Helm 3 compatibility.
+
 ## [v1.0.5]
 
 ### Changed
@@ -95,7 +99,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Upgraded to kube state metric [new release 1.6.0](https://github.com/kubernetes/kube-state-metrics/releases/tag/v1.6.0)
 - Tuned the addon resizer for bigger clusters.
 
-[v1.0.5]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.5
+
+[Unreleased]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.0.5...HEAD
+
+[v1.0.5]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.0.4...v1.0.5
 [v1.0.4]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.4
 [v1.0.3]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.3
 [v1.0.2]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.2
