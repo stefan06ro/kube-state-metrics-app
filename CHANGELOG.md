@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.1.1] - 2020-07-22
+
 ### Added
 
 - Added workflows for automatic releases.
@@ -115,7 +117,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Tuned the addon resizer for bigger clusters.
 
 
-[Unreleased]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.0.5...v1.1.0
 [v1.0.5]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.0.4...v1.0.5
 [v1.0.4]: https://github.com/giantswarm/kube-state-metrics-app/releases/tag/v1.0.4
