@@ -6,6 +6,7 @@ name: kube-state-metrics
 namespace: kube-system
 port: 10301
 portName: metrics
+serviceType: managed
 
 replicas: 1
 

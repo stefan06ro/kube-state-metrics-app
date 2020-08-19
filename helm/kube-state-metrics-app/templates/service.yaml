@@ -4,14 +4,16 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.name }}
-    giantswarm.io/service-type: "managed"
+    {{- include "labels.common" . | nindent 4 }}
+    giantswarm.io/monitoring: "true"
   annotations:
     prometheus.io/scrape: "true"
+    prometheus.io/port: "{{ .Values.port  }}"
     prometheus.io/scheme: "http"
+    giantswarm.io/monitoring-port: "{{ .Values.port  }}"
 spec:
   ports:
   - port: {{ .Values.port }}
     name: {{ .Values.portName }}
   selector:
-    app: {{ .Values.name }}
+    {{- include "labels.selector" . | nindent 4 }}

@@ -33,6 +33,7 @@ var (
 	k8sSetup   *k8sclient.Setup
 	l          micrologger.Logger
 	tarballURL string
+	version    string
 )
 
 func init() {
@@ -48,10 +49,18 @@ func init() {
 	}
 
 	{
-		version := fmt.Sprintf("%s-%s", latestRelease, env.CircleSHA())
+		version = fmt.Sprintf("%s-%s", latestRelease, env.CircleSHA())
 		tarballURL, err = appcatalog.NewTarballURL(testCatalogURL, appName, version)
 		if err != nil {
 			panic(err.Error())
+		}
+	}
+
+	var helmChartLabel string
+	{
+		helmChartLabel = fmt.Sprintf("%s-%s", appName, version)
+		if len(helmChartLabel) > 63 {
+			helmChartLabel = helmChartLabel[:63]
 		}
 	}
 
@@ -118,16 +127,27 @@ func init() {
 						Name:      app,
 						Namespace: metav1.NamespaceSystem,
 						DeploymentLabels: map[string]string{
-							"app":                          app,
-							"app.kubernetes.io/managed-by": "Helm",
-							"giantswarm.io/service-type":   "managed",
+							"app":                           app,
+							"app.kubernetes.io/managed-by":  "Helm",
+							"app.kubernetes.io/name":        app,
+							"app.kubernetes.io/instance":    appName,
+							"app.kubernetes.io/version":     "v1.9.7",
+							"giantswarm.io/service-type":    "managed",
+							"helm.sh/chart":                 helmChartLabel,
+							"kubernetes.io/cluster-service": "true",
 						},
 						MatchLabels: map[string]string{
 							"app": app,
 						},
 						PodLabels: map[string]string{
-							"app":                        app,
-							"giantswarm.io/service-type": "managed",
+							"app":                           app,
+							"giantswarm.io/service-type":    "managed",
+							"app.kubernetes.io/managed-by":  "Helm",
+							"app.kubernetes.io/name":        app,
+							"app.kubernetes.io/instance":    appName,
+							"app.kubernetes.io/version":     "v1.9.7",
+							"helm.sh/chart":                 helmChartLabel,
+							"kubernetes.io/cluster-service": "true",
 						},
 					},
 				},
