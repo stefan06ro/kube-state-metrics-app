@@ -11,6 +11,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Added monitoring annotations and common labels.
 
+### Changed
+
+- Deploy `kube-state-metrics-app` on installations as part of app collection.
+
 ## [1.1.1] - 2020-07-22
 
 ### Added

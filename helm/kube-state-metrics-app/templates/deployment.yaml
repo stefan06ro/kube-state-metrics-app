@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Values.namespace }}
+  name: {{ include "resource.default.name" . }}
+  namespace: {{ include "resource.default.namespace" . }}
   labels:
     {{- include "labels.common" . | nindent 4 }}
 spec:
@@ -19,7 +19,7 @@ spec:
     spec:
       priorityClassName: giantswarm-critical
       containers:
-      - name: {{ .Values.name }}
+      - name: {{ include "resource.default.name" . }}
         image: "{{ .Values.image.registry }}/{{ .Values.image.name }}:{{ .Values.image.tag }}"
         args:
         - '--port={{ .Values.port }}'
@@ -39,7 +39,7 @@ spec:
           requests:
             cpu: 500m
             memory: 500Mi
-      serviceAccountName: {{ .Values.name }}
+      serviceAccountName: {{ include "resource.default.name" . }}
       securityContext:
         fsGroup: 65534
         runAsUser: 65534
