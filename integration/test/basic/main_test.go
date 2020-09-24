@@ -48,11 +48,13 @@ func init() {
 	{
 		gitCommit = os.Getenv("TEST_GIT_COMMIT")
 		gitBranch = os.Getenv("TEST_GIT_BRANCH")
+		gitBranch = strings.ReplaceAll(gitBranch, "#", "-")
+
 		appVersion = os.Getenv("TEST_APP_VERSION")
 
 		chartID = fmt.Sprintf("%s-%s", appName, os.Getenv("TEST_PROJECT_VERSION"))
 		// chartID has to match `define "chart"` from _helpers.tpl
-		chartID = strings.Replace(chartID, "+", "_", 0)
+		chartID = strings.ReplaceAll(chartID, "+", "_")
 		if len(chartID) > 63 {
 			chartID = chartID[:63]
 		}
