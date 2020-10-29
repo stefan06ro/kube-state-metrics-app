@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Fixed
+
+- Support deployment of `kube-state-metrics-app` on chinese installations.
+
 ## [1.2.0] - 2020-09-24
 
 ### Added
