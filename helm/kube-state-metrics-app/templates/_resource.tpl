@@ -15,6 +15,10 @@ room for such suffix.
 {{ .Release.Namespace }}
 {{- end -}}
 
+{{- define "resource.deployment.name" -}}
+{{- printf "%s-%s" .Release.Name .Chart.AppVersion | replace "." "-" | trunc 47 | trimSuffix "-" -}}
+{{- end -}}
+
 {{- define "resource.psp.name" -}}
 {{- include "resource.default.name" . -}}-psp
 {{- end -}}
