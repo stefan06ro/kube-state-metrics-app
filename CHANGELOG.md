@@ -7,6 +7,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Change the Kubernetes Deployment name to include the app version.
+
 ## [1.2.1] - 2020-10-29
 
 ### Fixed
