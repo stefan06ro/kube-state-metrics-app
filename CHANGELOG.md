@@ -7,6 +7,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+## [1.3.0] - 2020-11-25
+
 ### Changed
 
 - Change the Kubernetes Deployment name to include the app version.
@@ -137,7 +139,8 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 - Tuned the addon resizer for bigger clusters.
 
 
-[Unreleased]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/giantswarm/kube-state-metrics-app/compare/v1.1.0...v1.1.1
