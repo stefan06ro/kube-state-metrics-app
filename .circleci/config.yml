@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  architect: giantswarm/architect@0.10.0
+  architect: giantswarm/architect@0.17.0
 
 workflows:
   build:
@@ -19,8 +19,8 @@ workflows:
       - architect/integration-test:
           context: architect
           name: basic-integration-test
+          install-app-platform: true
           test-dir: "integration/test/basic"
-          env-file: "integration/config/.env"
           filters:
             # Do not trigger the job on merge to master.
             branches:
@@ -28,7 +28,6 @@ workflows:
                 - master
           requires:
             - push-to-default-app-catalog
-            - push-kube-state-metrics-to-control-plane-app-catalog
 
       - architect/push-to-app-catalog:
           context: architect
