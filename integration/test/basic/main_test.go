@@ -9,41 +9,22 @@ import (
 	"testing"
 
 	"github.com/giantswarm/apptest"
-	"github.com/giantswarm/micrologger"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/kube-state-metrics-app/integration/env"
-)
-
-const (
-	app         = "kube-state-metrics"
-	appName     = "kube-state-metrics-app"
-	catalogName = "default-test"
+	"github.com/giantswarm/kube-state-metrics-app/integration/key"
+	"github.com/giantswarm/kube-state-metrics-app/integration/setup"
 )
 
 var (
-	appTest apptest.Interface
-	l       micrologger.Logger
+	config setup.Config
 )
 
 func init() {
 	var err error
 
 	{
-		c := micrologger.Config{}
-		l, err = micrologger.New(c)
-		if err != nil {
-			panic(err.Error())
-		}
-	}
-
-	{
-		c := apptest.Config{
-			Logger: l,
-
-			KubeConfigPath: env.KubeConfig(),
-		}
-		appTest, err = apptest.New(c)
+		config, err = setup.NewConfig()
 		if err != nil {
 			panic(err.Error())
 		}
@@ -60,16 +41,16 @@ func TestMain(m *testing.M) {
 	{
 		apps := []apptest.App{
 			{
-				CatalogName:   catalogName,
-				Name:          appName,
+				CatalogName:   key.DefaultTestCatalogName(),
+				Name:          key.CRName(),
 				Namespace:     metav1.NamespaceSystem,
 				SHA:           env.CircleSHA(),
 				WaitForDeploy: true,
 			},
 		}
-		err = appTest.InstallApps(ctx, apps)
+		err = config.AppTest.InstallApps(ctx, apps)
 		if err != nil {
-			l.LogCtx(ctx, "level", "error", "message", "install apps failed", "stack", fmt.Sprintf("%#v\n", err))
+			config.Logger.LogCtx(ctx, "level", "error", "message", "install apps failed", "stack", fmt.Sprintf("%#v\n", err))
 			os.Exit(-1)
 		}
 	}

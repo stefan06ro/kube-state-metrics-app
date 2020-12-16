@@ -37,6 +37,6 @@ func CircleSHA() string {
 	return circleSHA
 }
 
-func KubeConfig() string {
+func KubeConfigPath() string {
 	return kubeconfig
 }
