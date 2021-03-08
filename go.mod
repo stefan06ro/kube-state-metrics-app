@@ -11,3 +11,5 @@ require (
 	github.com/stretchr/testify v1.6.1 // indirect
 	k8s.io/apimachinery v0.19.2
 )
+
+replace github.com/coreos/etcd v3.3.10+incompatible => github.com/coreos/etcd v3.3.25+incompatible
