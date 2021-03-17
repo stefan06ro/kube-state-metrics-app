@@ -92,3 +92,17 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+
+      - architect/push-to-app-collection:
+          context: architect
+          name: push-kube-state-metrics-to-vmware-app-collection
+          app_name: "kube-state-metrics-app"
+          app_namespace: "monitoring"
+          app_collection_repo: "vmware-app-collection"
+          requires:
+            - push-kube-state-metrics-to-control-plane-app-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
