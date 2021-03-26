@@ -16,7 +16,7 @@ replicas: 1
 e2e: false
 
 image:
-  registry: quay.io
+  registry: docker.io
   name: giantswarm/kube-state-metrics
   # when updating tag make sure to also keep appVersion in Chart.yaml in sync
   tag: v1.9.7
