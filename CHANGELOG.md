@@ -7,6 +7,11 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [Unreleased]
 
+### Changed
+
+- Migrate to configuration management.
+- Update `architect-orb` to v4.0.0.
+
 ## [1.3.1] - 2021-03-26
 
 ### Changed

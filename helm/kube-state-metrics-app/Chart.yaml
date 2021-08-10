@@ -4,3 +4,5 @@ description: A Helm chart for the Kubernetes kube-state-metrics service
 home: https://github.com/giantswarm/kube-state-metrics-app
 name: kube-state-metrics-app
 version: [[ .Version ]]
+annotations:
+  config.giantswarm.io/version: 1.x.x

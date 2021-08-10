@@ -13,6 +13,7 @@ serviceType: managed
 
 replicas: 1
 
+isManagementCluster: false
 e2e: false
 
 image:
@@ -25,3 +26,6 @@ test:
   image:
     name: giantswarm/alpine-testing
     tag: 0.1.0
+
+registry:
+  domain: docker.io
